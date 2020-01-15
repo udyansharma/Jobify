@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Jobify</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <!-- sr only is for how to display on screenreaders -->
+        <a class="nav-link" id="anchor-to-dashboard" href="" onclick="headToDashboard()">Dashboard<span
+            class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav my-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" id="anchor-to-logout" onclick="endSession()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<script>
+
+  function headToDashboard() {
+    let application = window.location.pathname.split("/")[0];
+    if(application == ""){
+      console.log(window.location.hostname+":"+window.location.port);
+      window.location.href= window.location.hostname+":"+window.location.port;
+    }
+    else{
+      window.location.href= window.location.hostname+application;
+    }
+   }
+   function endSession(){
+     anchorElement.href = window.location.pathname+"/logout";
+   }
+</script>

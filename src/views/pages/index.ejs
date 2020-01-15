@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Jobify - Single Place For All Jobs</title>
+
+  <%- include ('../partials/head.ejs') %>
+
+  <link href="./css/floating-labels.css" rel="stylesheet">
+</head>
+
+<header>
+  <%- include ('../partials/header.ejs') %>
+</header>
+
+<body>
+  <div class="form-signin" id="sign-in">
+    <form id="sign-in-form" action="/" method="POST">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+      </div>
+      <div class="form-label-group">
+        <input type="text" id="user-identifier" class="form-control" placeholder="Email" name="email" required
+          autofocus>
+        <label for="user-identifier">Email</label>
+      </div>
+      <div class="form-label-group">
+        <input type="password" id="user-password" class="form-control password" placeholder="Password" name="password"
+          required>
+        <label for="user-password">Password</label>
+        <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
+          title="Toggle View"
+          style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit" onclick="signIn()">Sign in</button>
+    </form>
+    <span style="position: relative;margin-bottom: 0px; float:right">
+      <label>
+        <a href="javascript:void(0);" onclick="loadSignUpWindow()">Don't Have An Account? Sign Up</a>
+      </label>
+    </span>
+  </div>
+
+  <!-- JOBSEEKER SIGN UP FORM -->
+  <div class="form-signin" id="jobseeker-sign-up" style="display: none;">
+    <form id="jobseeker-sign-up-form" action="/" method="POST">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+      </div>
+      <div class="form-label-group">
+        <input type="email" id="user-signup-id" class="form-control" placeholder="Email" name="email" required
+          autofocus>
+        <label for="user-signup-id">Email*</label>
+      </div>
+      <div class="form-label-group">
+        <input type="password" id="user-signup-password" class="form-control" placeholder="Password" minlength=3
+          name="password" required>
+        <label for="user-signup-password">Password*</label>
+        <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
+          title="Toggle View"
+          style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
+      </div>
+      <div class="form-label-group">
+        <input type="password" id="user-signup-cnf-password" class="form-control" placeholder="Password" minlength=3
+          name="confirmPassword" required>
+        <label for="user-signup-cnf-password">Confirm Password*</label>
+        <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
+          title="Toggle View"
+          style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
+      </div>
+      <div class="form-label-group">
+        <input type="number" id="user-signup-exp" class="form-control" placeholder="Exp. in Years" min=0 max=30
+          step='0.1' name="experience" required>
+        <label for="user-signup-exp">Experience in Years*</label>
+      </div>
+      <div class="form-label-group">
+        <input type="profile" id="user-signup-id" class="form-control" placeholder="Profile" name="profile" required
+          autofocus>
+        <label for="user-signup-profile">Profile You Wish To Work In*</label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit" onclick="signUp()">Sign Up</button>
+    </form>
+    <span style="position: relative;margin-bottom: 0px; float:right">
+      <label>
+        <a href="javascript:void(0);" onclick="loadSignInWindow()">Already Have An Account? Sign In Instead</a>
+      </label>
+    </span>
+  </div>
+
+  <!-- RECRUITER SIGN UP FORM -->
+  <div class="form-signin" id="recruiter-sign-up" style="display: none;">
+    <form id="recruiter-sign-up-form" action="/" method="POST">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+      </div>
+      <div class="form-label-group">
+        <input type="email" id="recruiter-signup-id" class="form-control" placeholder="Email" name="email" required
+          autofocus>
+        <label for="recruiter-id">Email</label>
+      </div>
+      <div class="form-label-group">
+        <input type="password" id="recruiter-signup-password" class="form-control" placeholder="Password" minlength=3
+          name="password" required>
+        <label for="password">Password</label>
+        <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
+          title="Toggle View"
+          style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
+      </div>
+      <div class="form-label-group">
+        <input type="password" id="recruiter-sign-up-cnf-password" class="form-control" placeholder="Password"
+          minlength=3 name="confirmPassword" required>
+        <label for="recruiter-sign-up-cnf-password">Confirm Password</label>
+        <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
+          title="Toggle View"
+          style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
+      </div>
+
+      <div class="form-label-group">
+        <input type="profile" id="recruiter-signup-company" class="form-control" placeholder="company" name="company" required
+          autofocus>
+        <label for="recruiter-signup-company">Company*</label>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit" onclick="signUp()">Sign Up</button>
+    </form>
+    <span style="position: relative;margin-bottom: 0px; float:right">
+      <label>
+        <a href="javascript:void(0);" onclick="loadSignInWindow()">Already Have An Account? Sign In Instead</a>
+      </label>
+    </span>
+  </div>
+
+</body>
+<footer>
+  <%- include ('../partials/footer.ejs') %>
+</footer>
+<script>
+  function togglePassword(e) {
+    let passwordField = e.parentNode.getElementsByTagName("input")[0];
+    if (e.classList.contains("fa-lock")) {
+      e.classList.remove("fa-lock");
+      e.classList.add("fa-unlock");
+      passwordField.type = "text";
+    }
+    else {
+      e.classList.remove("fa-unlock");
+      e.classList.add("fa-lock");
+      passwordField.type = "password";
+    }
+  }
+
+  function signIn() {
+    let form = document.getElementById("sign-in-form");
+    console.log("FORM IS", form);
+    if (!form.checkValidity()) {
+      return false;
+    }
+    form.method = "POST";
+    if (window.location.pathname == "/")
+      form.action = window.location.href + "auth/signIn";
+    else
+      form.action = window.location.href + "/auth/signIn";
+    form.submit();
+  }
+
+  function signUp() {
+    let form;
+    if (window.location.pathname == "/") {
+      form = document.getElementById("jobseeker-sign-up-form");
+      form.action = window.location.href + "auth/signUp";
+    }
+    else {
+      form = document.getElementById("recruiter-sign-up-form");
+      form.action = window.location.href + "/auth/signUp";
+
+    }
+    if (!form.checkValidity()) {
+      return false;
+    }
+    form.method = "POST";
+    form.submit();
+  }
+
+  function loadSignUpWindow() {
+    if (window.location.pathname == "/") {
+      document.getElementById('jobseeker-sign-up').style.display = "block";
+      document.getElementById('recruiter-sign-up').style.display = "none";
+    }
+    else {
+      document.getElementById('recruiter-sign-up').style.display = "block";
+      document.getElementById('jobseeker-sign-up').style.display = "none";
+    }
+    document.getElementById('sign-in').style.display = "none";
+
+  }
+
+  function loadSignInWindow() {
+    document.getElementById('sign-in').style.display = "block";
+    document.getElementById('jobseeker-sign-up').style.display = "none";
+    document.getElementById('recruiter-sign-up').style.display = "none";
+  }
+
+</script>
+
+</html>

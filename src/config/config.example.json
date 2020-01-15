@@ -1,0 +1,27 @@
+{
+  "application": {
+    "port": "8090",
+    "signature": "dashvdhbjsadashjrghf",
+    "jwtexpiration": "12h"
+  },
+  "localEnv": {
+    "db": {
+      "host": "localhost",
+      "port": "3306",
+      "database": "jobify",
+      "user": "root",
+      "password": "root",
+      "connectionLimit": 20
+    }
+  },
+  "herokuEnv": {
+    "db": {
+      "host": "localhost",
+      "port": "3306",
+      "database": "jobify",
+      "user": "root",
+      "password": "root",
+      "connectionLimit": 20
+    }
+  }
+}
