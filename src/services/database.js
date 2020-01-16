@@ -235,13 +235,52 @@ const getJobsForUser = (email) => {
                         }
                     })
                 }
-                });
+            });
             connection.release();
             if (err) {
                 reject(err);
             }
         })
     });
+};
+
+const applyForJob = (email, jobId) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.log("Unable to get connection");
+                reject(err);
+            }
+            connection.query(mysql.format('SELECT _id from jobseeker WHERE email=?', [email]), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let jobSeekerId = result[0]._id;
+                    connection.query(mysql.format('INSERT INTO applications VALUES (?,?)', [jobId, jobSeekerId]), (err, result) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            connection.query(mysql.format('UPDATE job SET number_of_applicants=number_of_applicants+1'), (err, result) => {
+                                if (err) {
+                                    reject(err);
+                                }
+                                else {
+                                    resolve();
+                                }
+                            })
+                        }
+                    })
+
+                }
+            })
+            connection.release();
+            if (err) {
+                reject(err);
+            }
+        })
+    })
 };
 
 module.exports = {
@@ -251,5 +290,6 @@ module.exports = {
     getRecruiterDetails,
     getEntireJobList,
     getJobsForUser,
-    getListOfAppliedJobs
+    getListOfAppliedJobs,
+    applyForJob
 }

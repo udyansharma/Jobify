@@ -53,4 +53,21 @@ router.get('/appliedJobs', async (req, res, next) => {
     }
 });
 
+/* router.get('/applicationForJob', async (req, res, next) => {
+    try {
+        console.log("USER", res.locals.loggedInUser);
+        let loggedInUser = res.locals.loggedInUser;
+        validatio
+        let jobsAppliedFor = await jobSeeker.getListOfAppliedJobs(loggedInUser);
+        return res.status(200).render("pages/jobSeeker/jobListing.ejs", { title:"Jobs You Applied For",data: jobsAppliedFor });
+    }
+    catch (err) {
+        console.log(err);
+        if (err == "Server Error") {
+            return res.status(500).send("We Are Sorry. It's Not You It's Us.");
+        }
+        res.status(400).json({ success: false, message: "Caught Your Error. Check Your Server Logs \n" + err });
+    }
+}); */
+
 module.exports = router;

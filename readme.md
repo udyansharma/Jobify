@@ -10,4 +10,5 @@ Things which are missing right now:
 6) NodeMailer service upon sign up.
 7) Current Organization Not Included.
 8) Skills Not Included.
-9) Flash Messages Missing.
+9) Flash Messages.
+10) Job Seeker can still see the applied job again in the entire job list.
