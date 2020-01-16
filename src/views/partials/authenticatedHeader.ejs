@@ -1,37 +1,92 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Jobify</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="javascript:void(0);" onclick="headToDashboard()">Jobify</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <!-- sr only is for how to display on screenreaders -->
-        <a class="nav-link" id="anchor-to-dashboard" href="" onclick="headToDashboard()">Dashboard<span
-            class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-    <ul class="navbar-nav my-lg-0">
-      <li class="nav-item">
-        <a class="nav-link" id="anchor-to-logout" onclick="endSession()">Logout</a>
-      </li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-all-jobs" href="javascript:void(0);" onclick="headToDashboard()">All
+                    Jobs<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-curated-jobs" href="javascript:void(0);" onclick="seeCuratedJobs()">Jobs
+                    For Me<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-applied-jobs" href="javascript:void(0);"
+                    onclick="seeYourApplications()">Applied Jobs<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" id="anchor-to-logout" href="javascript:void(0);" onclick="endSession()">Logout</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 <script>
 
-  function headToDashboard() {
-    let application = window.location.pathname.split("/")[0];
-    if(application == ""){
-      console.log(window.location.hostname+":"+window.location.port);
-      window.location.href= window.location.hostname+":"+window.location.port;
+
+    function headToLoginScreen() {
+        let application = window.location.pathname.split("/")[1];
+        if (application == "auth") {
+
+            window.location.href = window.location.hostname + ":" + window.location.port + application;
+            window.location.reload(true);
+        }
+        else {
+            console.log("T",window.location.href);
+            window.location.href = window.location.hostname + ":" + window.location.port + "/" +application;
+            window.location.reload(true);
+
+        }
     }
-    else{
-      window.location.href= window.location.hostname+application;
+
+    function headToDashboard() {
+        let application = window.location.pathname.split("/")[1];
+        if (application == "auth") {
+            window.location.href = window.location.hostname + ":" + window.location.port + "/auth/signIn";
+        }
+        else {
+            window.location.href = window.location.hostname + ":" + window.location.port + "/" + application + "/auth/signIn";
+        }
     }
-   }
-   function endSession(){
-     anchorElement.href = window.location.pathname+"/logout";
-   }
+
+    function endSession() {
+        let application = window.location.pathname.split("/")[1];
+        let logoutRoute = "/auth/logout";
+        let url = "http://";
+        if (application == "auth") {
+            url = url+window.location.hostname + ":" + window.location.port + logoutRoute;
+        }
+        else {
+            url = url+window.location.hostname + ":" + window.location.port + "/" + application + logoutRoute;
+        }
+        let token = getToken();
+        // $.ajax(({
+        //     type: "GET",
+        //     url: url,
+        //     beforeSend: (request) => {
+        //         request.setRequestHeader('Authorization', 'Bearer ' + token);
+        //     },
+        //     success: function () { console.log("SUC"); removeSession(); },
+        //     error: function () { console.log("FAIl"); }
+        // }))
+        removeSession();
+    }
+
+    function getToken() {
+        return localStorage.getItem('token', token);
+    }
+
+    function removeSession() {
+        localStorage.removeItem("token");
+        headToLoginScreen();
+    }
+
 </script>

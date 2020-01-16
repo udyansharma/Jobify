@@ -1,5 +1,9 @@
 Minimal Implementation
 
+How to run the app
+
+In the root directory type: npm start
+
 Things which are missing right now:
 
 1) User names
@@ -12,3 +16,7 @@ Things which are missing right now:
 8) Skills Not Included.
 9) Flash Messages.
 10) Job Seeker can still see the applied job again in the entire job list.
+11) Proper logout i.e. token deletion or expiration from server side as well. Or basically switching to session.
+12) Time of Posting A Job.
+13) Experience at time of posting should be a range. While at user account creation it should be the same.
+14) In token user id should have been returned, so that there is no need of doing extra queries to fetch it on the basis of email.

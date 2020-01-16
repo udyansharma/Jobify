@@ -20,6 +20,7 @@ const signUp = (input) => {
         })
     })
 }
+
 const signIn = (input) => {
     return new Promise((resolve, reject) => {
         let email = input.email;
@@ -39,4 +40,59 @@ const signIn = (input) => {
     });
 
 }
-module.exports = { signIn,signUp }
+
+const getJobsPostedByMe = (loggedInUser) => {
+    return new Promise((resolve, reject) => {
+        databaseUtility.getJobsPostedByRecruiter(loggedInUser).then((result) => {
+            resolve(result);
+         }).catch((err) => {
+            reject(err);
+        })
+    })
+}
+
+const postAJob = (user,input) => {
+    return new Promise((resolve,reject)=>{
+        let postedBy = user;
+        let description = input.description;
+        let city = input.city;
+        let profile = input.profile;
+        let experience = input.experience;
+        databaseUtility.postAJob([description,city,postedBy,profile,experience]).then((result)=>{
+            resolve();
+        }).catch((err)=>{
+            reject(err);
+        })    
+    })
+    
+}
+
+const getApplicantsForAJob = (input) => {
+    return new Promise((resolve, reject) => {
+        let jobId = input.jobId;
+        databaseUtility.getApplicantsForAJob(jobId).then((result) => {
+            resolve(result);
+         }).catch((err) => {
+            reject(err);
+        })
+    })
+}
+
+const getApplicants = (recruiter,input) => {
+    return new Promise((resolve, reject) => {
+        let postedBy = recruiter;
+        databaseUtility.getApplicants(postedBy).then((result) => {
+            resolve(result);
+         }).catch((err) => {
+            reject(err);
+        })
+    })
+}
+module.exports = {
+    signIn,
+    signUp,
+    getJobsPostedByMe,
+    postAJob,
+    getApplicants,
+    getApplicantsForAJob
+}
