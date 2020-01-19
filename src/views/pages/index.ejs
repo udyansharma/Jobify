@@ -10,7 +10,7 @@
 
   <%- include ('../partials/head.ejs') %>
 
-  <link href="./css/floating-labels.css" rel="stylesheet">
+  <link href="/css/floating-labels.css" rel="stylesheet">
 </head>
 
 <header>
@@ -161,8 +161,9 @@
       return false;
     }
     form.method = "POST";
-    if (window.location.pathname == "/")
+    if (window.location.pathname == "/"){
       form.action = window.location.href + "auth/signIn";
+    }
     else
       form.action = window.location.href + "/auth/signIn";
     form.submit();

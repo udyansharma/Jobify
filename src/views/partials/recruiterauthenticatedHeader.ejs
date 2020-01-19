@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" href="javascript:void(0);" onclick="headToDashboard()">Jobify</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,8 @@
             </li>
             <li class="nav-item">
                 <!-- sr only is for how to display on screenreaders -->
-                <a class="nav-link" id="anchor-to-dashboard" href="javascript:void(0);" onclick="showJobPostingForm()">Post A Job
+                <a class="nav-link" id="anchor-to-dashboard" href="javascript:void(0);"
+                    onclick="showJobPostingForm()">Post A Job
                     Opening<span class="sr-only">(current)</span></a>
             </li>
         </ul>
@@ -32,20 +33,18 @@
 </nav>
 <script>
 
-
     function headToLoginScreen() {
         let application = window.location.pathname.split("/")[1];
+        let pathToLogin = "http://" + window.location.hostname + ":" + window.location.port;
         if (application == "auth") {
-
-            window.location.href = window.location.hostname + ":" + window.location.port + application;
-            window.location.reload(true);
+            pathToLogin += application;
         }
         else {
-            console.log("T", window.location.href);
-            window.location.href = window.location.hostname + ":" + window.location.port + "/" + application;
-            window.location.reload(true);
-
+            pathToLogin += "/" + application;
         }
+        console.log("T", application, pathToLogin);
+        // I am using replace here here for now so that I don't have to do the token checks. 
+        window.location.replace(pathToLogin);
     }
 
     function headToDashboard() {
@@ -83,11 +82,11 @@
     }
 
     function getToken() {
-        return localStorage.getItem('token', token);
+        return localStorage.getItem('token');
     }
 
     function removeSession() {
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         headToLoginScreen();
     }
 
@@ -97,17 +96,17 @@
         document.getElementById("page-title").innerHTML = "";
     }
 
-    function postAJob(){
+    function postAJob(e) {
         let token = getToken();
-        console.log(token);
-        let formData = new FormData(document.getElementById('recruiter-post-job-form'));
+        let formData = new FormData(e);
         $.ajax({
-            type: "POST",
             url: "http://localhost:8090/recruiterPortal/explore/jobPosting",
-            data: formData,
+            type: "POST",
             beforeSend: (request) => {
                 request.setRequestHeader('Authorization', 'Bearer ' + token);
-            }
+            },
+            data: formData,
+            processData: false
         }).done((data) => {
             document.getElementById("error-msg").innerHTML = "Job Posted Successfully";
         }).fail((err) => {

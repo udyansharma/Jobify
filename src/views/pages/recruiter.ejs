@@ -10,7 +10,7 @@
 
     <%- include ('../partials/head.ejs') %>
 
-    <link href="./css/floating-labels.css" rel="stylesheet">
+    <link href="/css/floating-labels.css" rel="stylesheet">
   </head>
 
   <header>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="form-signin" id="recruiter-post-job" style="display: none;">
-      <form id="recruiter-post-job-form" action="" method="POST">
+      <form id="recruiter-post-job-form" onsubmit="event.preventDefault();postAJob(this)">
         <div class="text-center mb-4">
           <h1 class="h3 mb-3 font-weight-normal">Post A Job</h1>
         </div>
@@ -52,7 +52,7 @@
           <label for="recruiter-id">Experience*</label>
         </div>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit" onclick="postAJob()">Post Opening
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Post Opening
           </button>
       </form>
     </div>

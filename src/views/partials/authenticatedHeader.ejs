@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" href="javascript:void(0);" onclick="headToDashboard()">Jobify</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
@@ -34,17 +34,14 @@
 
     function headToLoginScreen() {
         let application = window.location.pathname.split("/")[1];
+        let pathToLogin = window.location.hostname + ":" + window.location.port;
         if (application == "auth") {
-
-            window.location.href = window.location.hostname + ":" + window.location.port + application;
-            window.location.reload(true);
+            pathToLogin+=application;
         }
         else {
-            console.log("T",window.location.href);
-            window.location.href = window.location.hostname + ":" + window.location.port + "/" +application;
-            window.location.reload(true);
-
+            pathToLogin+="/"+application;
         }
+        window.location.replace(pathToLogin);
     }
 
     function headToDashboard() {
@@ -81,11 +78,11 @@
     }
 
     function getToken() {
-        return localStorage.getItem('token', token);
+        return localStorage.getItem('token');
     }
 
     function removeSession() {
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         headToLoginScreen();
     }
 
