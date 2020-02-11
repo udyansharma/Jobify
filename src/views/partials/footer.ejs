@@ -33,6 +33,12 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
     function loadLoggingScreen() {
-        window.location.href = window.location.pathname;
+        let application = window.location.pathname.split("/")[1];
+        if (application == "auth") {
+            window.location.href = window.location.hostname + ":" + window.location.port;
+        }
+        else {
+            window.location.href = window.location.hostname + ":" + window.location.port + "/" + application;
+        }
     }
 </script>

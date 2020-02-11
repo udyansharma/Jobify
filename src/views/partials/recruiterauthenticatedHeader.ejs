@@ -49,6 +49,8 @@
 
     function headToDashboard() {
         document.getElementById("page-title").innerHTML = "Posted By Me";
+        document.getElementById("recruiter-post-job").style.display = "none";
+        document.getElementById("data-div").style.display = "block";
         let application = window.location.pathname.split("/")[1];
         if (application == "auth") {
             window.location.href = window.location.hostname + ":" + window.location.port + "/auth/signIn";

@@ -1,4 +1,8 @@
-Minimal Implementation
+# Jobify
+
+Made as a part of a 2 day full stack challenge. I challenged myself to keep minimal views for ejs targeting minimal codebase and to imititate react at a very high level with XHR and dom manipulations instead of rendering new pages.
+
+Although manipulating DOM is a costly affair but the implementation was a basic one and just a tryout.
 
 How to run the app
 
