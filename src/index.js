@@ -41,7 +41,12 @@ app.use((req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         let token = req.headers.authorization.split(' ')[1];
         try {
-            res.locals.loggedInUser = jwt.verify(token, config.application.signature).fetchedUser;
+            let verifiedToken = jwt.verify(token, config.application.signature);
+            let userEmail = verifiedToken.fetchedUser;
+            if(req.url.includes("recruiterPortal")){
+                userEmail=verifiedToken.fetchedRecruiter;
+            }
+            res.locals.loggedInUser = userEmail;
         }
         catch (err) {
             if (err == "JsonWebTokenError: invalid token") {
@@ -50,7 +55,7 @@ app.use((req, res, next) => {
             if (err == "TokenExpiredError: jwt expired") {
                 return res.status(400).send("Can You Please Login Again");
             }
-
+            
         }
         next();
     }

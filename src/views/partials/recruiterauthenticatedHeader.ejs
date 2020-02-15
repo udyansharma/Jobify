@@ -1,0 +1,166 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="javascript:void(0);" onclick="headToDashboard()">Jobify</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-all-jobs-posted" href="javascript:void(0);"
+                    onclick="headToDashboard()">All
+                    Jobs Posted<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-applicant-list" href="javascript:void(0);"
+                    onclick="renderAllApplicants()">Applicant List<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <!-- sr only is for how to display on screenreaders -->
+                <a class="nav-link" id="anchor-to-dashboard" href="javascript:void(0);"
+                    onclick="showJobPostingForm()">Post A Job
+                    Opening<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" id="anchor-to-logout" href="javascript:void(0);" onclick="endSession()">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<script>
+
+    function headToLoginScreen() {
+        let application = window.location.pathname.split("/")[1];
+        let pathToLogin = "http://" + window.location.hostname + ":" + window.location.port;
+        if (application == "auth") {
+            pathToLogin += application;
+        }
+        else {
+            pathToLogin += "/" + application;
+        }
+        console.log("T", application, pathToLogin);
+        // I am using replace here here for now so that I don't have to do the token checks. 
+        window.location.replace(pathToLogin);
+    }
+
+    function headToDashboard() {
+        document.getElementById("page-title").innerHTML = "Posted By Me";
+        document.getElementById("recruiter-post-job").style.display = "none";
+        document.getElementById("data-div").style.display = "block";
+        let application = window.location.pathname.split("/")[1];
+        if (application == "auth") {
+            window.location.href = window.location.hostname + ":" + window.location.port + "/auth/signIn";
+        }
+        else {
+            window.location.href = window.location.hostname + ":" + window.location.port + "/" + application + "/auth/signIn";
+        }
+    }
+
+    function endSession() {
+        let application = window.location.pathname.split("/")[1];
+        let logoutRoute = "/auth/logout";
+        let url = "http://";
+        if (application == "auth") {
+            url = url + window.location.hostname + ":" + window.location.port + logoutRoute;
+        }
+        else {
+            url = url + window.location.hostname + ":" + window.location.port + "/" + application + logoutRoute;
+        }
+        let token = getToken();
+        // $.ajax(({
+        //     type: "GET",
+        //     url: url,
+        //     beforeSend: (request) => {
+        //         request.setRequestHeader('Authorization', 'Bearer ' + token);
+        //     },
+        //     success: function () { console.log("SUC"); removeSession(); },
+        //     error: function () { console.log("FAIl"); }
+        // }))
+        removeSession();
+    }
+
+    function getToken() {
+        return localStorage.getItem('token');
+    }
+
+    function removeSession() {
+        localStorage.removeItem('token');
+        headToLoginScreen();
+    }
+
+    function showJobPostingForm() {
+        document.getElementById("recruiter-post-job").style.display = "block";
+        document.getElementById("data-div").style.display = "none";
+        document.getElementById("page-title").innerHTML = "";
+    }
+
+    function postAJob(e) {
+        let token = getToken();
+        let formData = new FormData(e);
+        $.ajax({
+            url: "http://localhost:8090/recruiterPortal/explore/jobPosting",
+            type: "POST",
+            beforeSend: (request) => {
+                request.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            data: formData,
+            processData: false
+        }).done((data) => {
+            document.getElementById("error-msg").innerHTML = "Job Posted Successfully";
+        }).fail((err) => {
+            let msg = err.responseText;
+            document.getElementById("error-msg").innerHTML = "Could Not Post Job" + msg;
+        })
+
+    }
+
+    function renderAllApplicants() {
+        document.getElementById("data-div").style.display = "block";
+        document.getElementById("recruiter-post-job").style.display = "none";
+        let token = getToken();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8090/recruiterPortal/explore/listOfApplicants?jobId=1",
+            beforeSend: (request) => {
+                request.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+        }).done((data) => {
+            document.getElementById("data-holder").innerHTML = JSON.stringify(data);
+        }).fail((err) => {
+            let msg = err.responseText;
+            if (msg.includes("No Applicants")) {
+                document.getElementById("page-title").innerHTML = "Entire Applicant List";
+                document.getElementById("data-holder").innerHTML = "";
+                document.getElementById("error-msg").innerHTML = "There have been no recent Applications To This Job"
+            }
+        })
+    }
+
+    function renderApplicantsForThisJob(e) {
+        let token = getToken();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8090/recruiterPortal/explore/listOfApplicants?jobId=1",
+            beforeSend: (request) => {
+                request.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+        })
+            .done((err, data) => {
+                console.log(err);
+                console.log("WT", data);
+                document.getElementById("data-holder").innerHTML = data;
+
+            }).fail((err) => {
+                let msg = err.responseText;
+                if (msg.includes("No Applicants")) {
+                    document.getElementById("data-holder").innerHTML = "";
+                    document.getElementById("error-msg").innerHTML = "There have been no recent Applications To This Job"
+                }
+            })
+    }
+
+</script>

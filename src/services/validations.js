@@ -8,10 +8,10 @@ const jobSeekerSigningUp = (input) => {
     if (!input.password) {
         throw "Password Missing";
     }
-    if(!input.experience){
+    if (!input.experience) {
         throw "Experience Missing";
     }
-    if(!input.profile){
+    if (!input.profile) {
         throw "Profile Missing";
     }
     if (input.password.length <= 3) {
@@ -35,7 +35,7 @@ const recruiterSigningUp = (input) => {
     if (!input.password) {
         throw "Password Missing";
     }
-    if(!input.company){
+    if (!input.company) {
         throw "Company Name Missing";
     }
     if (input.password.length <= 3) {
@@ -61,9 +61,37 @@ const signingIn = (input) => {
     }
 };
 
+const submittingJobOpening = (input) => {
+    if (JSON.stringify(input) === "{}") {
+        throw "You Did Not Sent Any Data To Us";
+    }
+    if (!input.description) {
+        throw "Description Missing";
+    }
+    if (!input.city) {
+        throw "City Missing";
+    }
+    if (!input.profile) {
+        throw "Company Name Missing";
+    }
+    if (!input.experience) {
+        throw "Experience Missing";
+    }
+};
+
+const gettingApplicants = (input) => {
+    if (JSON.stringify(input) === "{}") {
+        throw "You Did Not Sent Any Data To Us";
+    }
+    if (!input.jobId) {
+        throw "JobId Missing";
+    }
+};
+
 module.exports = {
     signingIn,
     recruiterSigningUp,
     jobSeekerSigningUp,
-
+    submittingJobOpening,
+    gettingApplicants
 }

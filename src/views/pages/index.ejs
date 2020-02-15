@@ -10,7 +10,7 @@
 
   <%- include ('../partials/head.ejs') %>
 
-  <link href="./css/floating-labels.css" rel="stylesheet">
+  <link href="/css/floating-labels.css" rel="stylesheet">
 </head>
 
 <header>
@@ -26,12 +26,12 @@
       <div class="form-label-group">
         <input type="text" id="user-identifier" class="form-control" placeholder="Email" name="email" required
           autofocus>
-        <label for="user-identifier">Email</label>
+        <label for="user-identifier">Email*</label>
       </div>
       <div class="form-label-group">
         <input type="password" id="user-password" class="form-control password" placeholder="Password" name="password"
           required>
-        <label for="user-password">Password</label>
+        <label for="user-password">Password*</label>
         <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
           title="Toggle View"
           style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
@@ -79,7 +79,7 @@
         <label for="user-signup-exp">Experience in Years*</label>
       </div>
       <div class="form-label-group">
-        <input type="profile" id="user-signup-id" class="form-control" placeholder="Profile" name="profile" required
+        <input type="profile" id="user-signup-profile" class="form-control" placeholder="Profile" name="profile" required
           autofocus>
         <label for="user-signup-profile">Profile You Wish To Work In*</label>
       </div>
@@ -101,12 +101,12 @@
       <div class="form-label-group">
         <input type="email" id="recruiter-signup-id" class="form-control" placeholder="Email" name="email" required
           autofocus>
-        <label for="recruiter-id">Email</label>
+        <label for="recruiter-id">Email*</label>
       </div>
       <div class="form-label-group">
         <input type="password" id="recruiter-signup-password" class="form-control" placeholder="Password" minlength=3
           name="password" required>
-        <label for="password">Password</label>
+        <label for="password">Password*</label>
         <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
           title="Toggle View"
           style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
@@ -114,7 +114,7 @@
       <div class="form-label-group">
         <input type="password" id="recruiter-sign-up-cnf-password" class="form-control" placeholder="Password"
           minlength=3 name="confirmPassword" required>
-        <label for="recruiter-sign-up-cnf-password">Confirm Password</label>
+        <label for="recruiter-sign-up-cnf-password">Confirm Password*</label>
         <span class="fa fa-lock" onclick="togglePassword(this)" data-toggle="tooltip" data-placement="right"
           title="Toggle View"
           style="position: relative;margin-top: -26px;margin-right: 10px;float: right;cursor:pointer;"></span>
@@ -161,8 +161,9 @@
       return false;
     }
     form.method = "POST";
-    if (window.location.pathname == "/")
+    if (window.location.pathname == "/"){
       form.action = window.location.href + "auth/signIn";
+    }
     else
       form.action = window.location.href + "/auth/signIn";
     form.submit();

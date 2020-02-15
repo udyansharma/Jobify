@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Jobify - Single Place For All Jobs</title>
+
+    <%- include ('../partials/head.ejs') %>
+
+    <link href="/css/floating-labels.css" rel="stylesheet">
+  </head>
+
+  <header>
+    <%- include ('../partials/recruiterauthenticatedHeader.ejs') %>
+  </header>
+
+  <body>
+    <div id="data-div">
+      <span id="page-title" style="display:inine-block;font-size:20px;"><%= title %></span>
+      <br>
+      <span id="data-holder"><%= (data && data.length>0)?data:"You Haven't Posted Any Job" %></span>
+      </br>
+      <span id="error-msg" style="display:inine-block;"></span>
+    </div>
+
+    <div class="form-signin" id="recruiter-post-job" style="display: none;">
+      <form id="recruiter-post-job-form" onsubmit="event.preventDefault();postAJob(this)">
+        <div class="text-center mb-4">
+          <h1 class="h3 mb-3 font-weight-normal">Post A Job</h1>
+        </div>
+        <div class="form-label-group">
+          <input type="text" id="recruiter-post-profile" class="form-control" placeholder="profile" name="profile"
+            required>
+          <label for="profile">Job Profile*</label>
+        </div>
+        <div class="form-label-group">
+          <input type="text" id="recruiter-post-description" class="form-control" placeholder="JD"
+            name="description" required>
+          <label for="description">Job Description*</label>
+        </div>
+        <div class="form-label-group">
+          <input type="text" id="recruiter-post-city" class="form-control" placeholder="city" name="city" required
+            autofocus>
+          <label for="recruiter-id">City*</label>
+        </div>
+        <div class="form-label-group">
+          <input type="number" minlength=0 step=0.1 id="recruiter-post-exp" class="form-control" placeholder="exp" name="experience" required
+            autofocus>
+          <label for="recruiter-id">Experience*</label>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Post Opening
+          </button>
+      </form>
+    </div>
+
+
+    <!-- <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table> -->
+    <span id="token" style="display:none;"><%= token?token:getToken() %></span>
+  </body>
+  <footer>
+    <%- include ('../partials/footer.ejs') %>
+  </footer>
+  <script>
+    let token = document.getElementById("token").innerHTML;
+    localStorage.setItem('token', token);
+  </script>
+
+</html>

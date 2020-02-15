@@ -7,7 +7,7 @@
   "localEnv": {
     "db": {
       "host": "localhost",
-      "port": "3306",
+      "port": "3308",
       "database": "jobify",
       "user": "root",
       "password": "root",
@@ -17,7 +17,7 @@
   "herokuEnv": {
     "db": {
       "host": "localhost",
-      "port": "3306",
+      "port": "3308",
       "database": "jobify",
       "user": "root",
       "password": "root",

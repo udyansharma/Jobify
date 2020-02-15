@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const config = require('../config/config.json');
-const env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV || "localEnv";
 var pool;
 try {
     pool = mysql.createPool(config[env].db);
@@ -49,7 +49,6 @@ const recruiterSignUp = (email, password, company) => {
             }
         })
     });
-
 };
 
 const jobSeekerSignUp = (email, password, experience, profile) => {
@@ -178,7 +177,6 @@ const getEntireJobList = () => {
             }
         })
     });
-
 };
 
 const getListOfAppliedJobs = (email) => {
@@ -235,7 +233,7 @@ const getJobsForUser = (email) => {
                         }
                     })
                 }
-                });
+            });
             connection.release();
             if (err) {
                 reject(err);
@@ -244,6 +242,137 @@ const getJobsForUser = (email) => {
     });
 };
 
+const applyForJob = (email, jobId) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.log("Unable to get connection");
+                reject(err);
+            }
+            connection.query(mysql.format('SELECT _id from jobseeker WHERE email=?', [email]), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let jobSeekerId = result[0]._id;
+                    connection.query(mysql.format('INSERT INTO applications VALUES (?,?)', [jobId, jobSeekerId]), (err, result) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            connection.query(mysql.format('UPDATE job SET number_of_applicants=number_of_applicants+1'), (err, result) => {
+                                if (err) {
+                                    reject(err);
+                                }
+                                else {
+                                    resolve();
+                                }
+                            })
+                        }
+                    })
+
+                }
+            })
+            connection.release();
+            if (err) {
+                reject(err);
+            }
+        })
+    })
+};
+
+const postAJob = (inputArray) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.log("Unable to get connection");
+                reject(err);
+            }
+            connection.query(mysql.format('SELECT _id from recruiter WHERE email=?', [inputArray[2]]), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let recruiterId = result[0]._id;
+                    inputArray[2] = recruiterId;
+                    connection.query(mysql.format('INSERT INTO job VALUES (NULL,?,0,?,?,1,?,?)', inputArray), (err, result) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve()
+                        }
+                    })
+
+                }
+            })
+            connection.release();
+            if (err) {
+                reject(err);
+            }
+        })
+    })
+};
+
+const getApplicantsForAJob = (jobId) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.log("Unable to get connection");
+                reject(err);
+            }
+            connection.query(mysql.format('SELECT applications.job_id,jobseeker.email,jobseeker.profile,jobseeker.experience from applications JOIN jobseeker on jobseeker._id=applications.applicant_id  WHERE applications.job_id=?', [jobId]), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    if(result.length==0){
+                        reject("No Applicants");
+                    }
+                    resolve(result);
+                }
+            })
+            connection.release();
+            if (err) {
+                reject(err);
+            }
+        })
+    })
+};
+
+const getJobsPostedByRecruiter = (email) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.log("Unable to get connection");
+                reject(err);
+            }
+            connection.query(mysql.format('SELECT _id from recruiter WHERE email=?', [email]), (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    let recruiterId = result[0]._id;
+                    connection.query(mysql.format('SELECT * FROM job WHERE posted_by=?', [recruiterId]), (err, result) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(result);
+                        }
+                    })
+
+                }
+            })
+            connection.release();
+            if (err) {
+                reject(err);
+            }
+        })
+    })
+}
+
+
 module.exports = {
     recruiterSignUp,
     jobSeekerSignUp,
@@ -251,5 +380,9 @@ module.exports = {
     getRecruiterDetails,
     getEntireJobList,
     getJobsForUser,
-    getListOfAppliedJobs
+    getListOfAppliedJobs,
+    applyForJob,
+    getJobsPostedByRecruiter,
+    postAJob,
+    getApplicantsForAJob
 }
